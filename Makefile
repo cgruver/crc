@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-BUNDLE_VERSION = 4.5.8
+BUNDLE_VERSION ?= 4.5.8
 # OC_VERSION and BUNDLE_VERSION are going to same for release artifacts but
 # different for nightly and CI bits where bundle version would be any random
 # string or dd-mm-yyyy format.
@@ -8,6 +8,7 @@ OC_VERSION ?= ${BUNDLE_VERSION}
 BUNDLE_EXTENSION = crcbundle
 CRC_VERSION = 1.15.0
 COMMIT_SHA=$(shell git rev-parse --short HEAD)
+MIRROR ?= https://mirror.openshift.com/pub/openshift-v4/clients/ocp
 
 # Go and compilation related variables
 BUILD_DIR ?= out
@@ -51,6 +52,7 @@ __check_defined = \
 VERSION_VARIABLES := -X $(REPOPATH)/pkg/crc/version.crcVersion=$(CRC_VERSION) \
     -X $(REPOPATH)/pkg/crc/version.bundleVersion=$(BUNDLE_VERSION) \
     -X $(REPOPATH)/pkg/crc/version.ocVersion=$(OC_VERSION) \
+	-X $(REPOPATH)/pkg/crc/version.defaultOcURLBase=$(MIRROR) \
 	-X $(REPOPATH)/pkg/crc/version.commitSha=$(COMMIT_SHA)
 
 # https://golang.org/cmd/link/
