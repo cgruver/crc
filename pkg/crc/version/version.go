@@ -12,7 +12,7 @@ import (
 
 // The following variables are private fields and should be set when compiling with ldflags, for example --ldflags="-X github.com/code-ready/crc/pkg/version.crcVersion=vX.Y.Z
 var (
-	// The current version of minishift
+	// The current version of crc
 	crcVersion = "0.0.0-unset"
 
 	// The SHA-1 of the commit this binary is build off
@@ -24,7 +24,7 @@ var (
 	// OC version which should be used.
 	ocVersion = "0.0.0-unset"
 
-	defaultOcURLBase = "0.0.0-unset"
+	defaultOcURLBase = "url-unset"
 )
 
 const (
