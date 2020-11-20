@@ -1,16 +1,12 @@
 SHELL := /bin/bash
 
 
-BUNDLE_VERSION = 4.6.3
+BUNDLE_VERSION ?= 4.6.3
 BUNDLE_EXTENSION = crcbundle
-CRC_VERSION = 1.19.0
+CRC_VERSION ?= 1.19.0
+OKD ?= false
 COMMIT_SHA=$(shell git rev-parse --short HEAD)
 CONTAINER_RUNTIME ?= podman
-
-ifdef OKD_VERSION
-    BUNDLE_VERSION = $(OKD_VERSION)
-    CRC_VERSION := $(CRC_VERSION)-OKD
-endif
 
 # Go and compilation related variables
 BUILD_DIR ?= out
@@ -51,11 +47,8 @@ __check_defined = \
 # Linker flags
 VERSION_VARIABLES := -X $(REPOPATH)/pkg/crc/version.crcVersion=$(CRC_VERSION) \
     -X $(REPOPATH)/pkg/crc/version.bundleVersion=$(BUNDLE_VERSION) \
-	-X $(REPOPATH)/pkg/crc/version.commitSha=$(COMMIT_SHA)
-
-ifdef OKD_VERSION
-	VERSION_VARIABLES := $(VERSION_VARIABLES) -X $(REPOPATH)/pkg/crc/version.okdBuild=true
-endif
+	-X $(REPOPATH)/pkg/crc/version.commitSha=$(COMMIT_SHA) \
+	-X $(REPOPATH)/pkg/crc/version.okdBuild=$(OKD)
 
 # https://golang.org/cmd/link/
 LDFLAGS := $(VERSION_VARIABLES) -extldflags='-static' -s -w
